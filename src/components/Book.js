@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useQuery } from "@apollo/client";
 import { getBookQuery } from '../queries/queries';
-import BookDetails from './BookDetails';
+import BookDetails from './BookDetails/BookDetails';
 
 const Book = () => {
     const [selected, setSelected] = useState();
+    const [isOpen, setIsOpen] = useState(false);
     const [arrayPosition, setArrayPosition] = useState(0);
     const { loading, error, data } = useQuery(getBookQuery);
 
@@ -31,6 +32,7 @@ const Book = () => {
             return word;
         });
         setSelected(word);
+        setIsOpen(true)
 
     }
 
@@ -44,12 +46,12 @@ const Book = () => {
     }
 
     const toggleNext = () => {
-        if (arrayPosition == reducedArray.length - 1) return;
+        if (arrayPosition === reducedArray.length - 1) return;
         setArrayPosition(arrayPosition + 1);
     }
 
     const togglePrev = () => {
-        if (arrayPosition == 0) return;
+        if (arrayPosition === 0) return;
         setArrayPosition(arrayPosition - 1);
     }
 
@@ -57,13 +59,14 @@ const Book = () => {
         <div>
             <h2>{bookTitle}</h2>
             <h3>{bookAuthor}</h3>
+            {isOpen && <BookDetails setIsOpen={setIsOpen} word={selected} />}
             <section className="container">
                 <div className="left-half">
                     {arrayPosition > 0 ? (
                         <button className="toggle toggle--prev" onClick={togglePrev}>Prev</button>
                     ) : ("")}
                     <article>
-                        <p>{leftPage}</p>
+                        {leftPage}
                     </article>
                 </div>
                 <div className="right-half">
@@ -71,12 +74,10 @@ const Book = () => {
                         <button className="toggle toggle--next" onClick={toggleNext}>Next</button>
                     ) : ("")}
                     <article>
-                        <p>{rightPage}</p>
+                        {rightPage}
                     </article>
                 </div>
             </section>
-
-            {/* <BookDetails word={selected} /> */}
         </div>
     );
 };
