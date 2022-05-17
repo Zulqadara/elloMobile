@@ -20,26 +20,28 @@ const Book = () => {
             result.push(array.slice(index, index + 2));
         return result;
     }, []);
-    
+
     const renderWord = (clickedPosition, pageIndex) => {
         const getPage = book.pages.find(index => index.pageIndex === pageIndex);
         var word = '';
-        getPage.tokens.forEach((element) => {  
-            if(element.position[0] <= clickedPosition && element.position[1] >= clickedPosition ){
+        getPage.tokens.forEach((element) => {
+            if (element.position[0] <= clickedPosition && element.position[1] >= clickedPosition) {
                 word = element.value;
             };
             return word;
         });
         setSelected(word);
-       
+
     }
 
-    const BookPages = reducedArray[arrayPosition].map((page) => {
-        const splitContent = [...page.content];
+    const leftPage = generateText(reducedArray[arrayPosition][0]);
+    const rightPage = generateText(reducedArray[arrayPosition][1]);
+    function generateText(array) {
+        const splitContent = [...array.content];
         const splitArray = Array.from(splitContent)
-        .map((word, i) => <span key={i} onClick={() => renderWord(i,page.pageIndex)}>{word}</span>)
-        return <li key={page.pageIndex}>{splitArray}</li>;
-    });
+            .map((word, i) => <span key={i} onClick={() => renderWord(i, array.pageIndex)}>{word}</span>)
+        return <p key={array.pageIndex}>{splitArray}</p>;
+    }
 
     const toggleNext = () => {
         if (arrayPosition == reducedArray.length - 1) return;
@@ -55,18 +57,26 @@ const Book = () => {
         <div>
             <h2>{bookTitle}</h2>
             <h3>{bookAuthor}</h3>
-            <ul id="book-list">{BookPages}</ul>
-            <BookDetails word={selected} />
-            <div className="controls">
-                {arrayPosition > 0 ? (
-                    <button className="toggle toggle--prev" onClick={togglePrev}>Prev</button>
-                ) : ("")}
-                
-                {arrayPosition < reducedArray.length - 1 ? (
-                    <button className="toggle toggle--next" onClick={toggleNext}>Next</button>
-                ) : ("")}
+            <section className="container">
+                <div className="left-half">
+                    {arrayPosition > 0 ? (
+                        <button className="toggle toggle--prev" onClick={togglePrev}>Prev</button>
+                    ) : ("")}
+                    <article>
+                        <p>{leftPage}</p>
+                    </article>
+                </div>
+                <div className="right-half">
+                    {arrayPosition < reducedArray.length - 1 ? (
+                        <button className="toggle toggle--next" onClick={toggleNext}>Next</button>
+                    ) : ("")}
+                    <article>
+                        <p>{rightPage}</p>
+                    </article>
+                </div>
+            </section>
 
-            </div>
+            {/* <BookDetails word={selected} /> */}
         </div>
     );
 };
