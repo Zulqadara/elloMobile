@@ -87,3 +87,13 @@ article {
 
 .toggle:hover {background-color: #35D461}
 
+.gif {
+  position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    width: 15%;
+    height: 15%;
+}

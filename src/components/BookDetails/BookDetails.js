@@ -1,6 +1,7 @@
 import "./BookDetails.css";
 
 const BookDetails = ({ word, setIsOpen }) => {
+    // Get an array of images
     const cartoonImages = [
         require('./img/monkey.png'),
         require('./img/fireman2.png'),
@@ -8,6 +9,8 @@ const BookDetails = ({ word, setIsOpen }) => {
         require('./img/pencil2.png'),
         require('./img/pencil3.png'),
     ];
+
+    // Randomize image to display when a user clicked on a word in parent view
     const randomImage = cartoonImages[Math.floor(Math.random() * cartoonImages.length)];
     let displayWord;
     if (word) {
@@ -17,7 +20,6 @@ const BookDetails = ({ word, setIsOpen }) => {
         <>
 
             <div className="darkBG" onClick={() => setIsOpen(false)} />
-
             <div className="centered">
                 <div className="modal">
                     <div className="modalHeader">
